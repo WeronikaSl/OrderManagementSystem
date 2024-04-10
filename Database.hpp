@@ -25,7 +25,8 @@ private:
 	void updateData(const std::unordered_set<std::string>&);
 	void deleteData(const std::unordered_set<std::string>&);
 	void retrieveData(const std::unordered_set<std::string>&);
-	void iterateThroughTable(std::array<std::vector<std::string>, 3>, const std::unordered_set<std::string>&) const;
+	void add(std::array<std::vector<std::string>, 3>&, const std::unordered_set<std::string>&); //TODO rename
+	void retrieve(std::array<std::vector<std::string>, 3>, const std::unordered_set<std::string>&) const; //TODO rename
 	void displayColumns() const;
 	std::unordered_set<std::string> chooseColumns() const;
 public:

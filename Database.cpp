@@ -3,7 +3,16 @@
 
 void Database::addData(const std::unordered_set<std::string>& chosenColumns)
 {
-	std::cout << "Data added" << std::endl; //TODO implement logic 
+	std::cout << std::endl;
+	add(products, chosenColumns);
+	std::cout << std::endl;
+	add(customers, chosenColumns);
+	std::cout << std::endl;
+	add(orders, chosenColumns);
+	std::cout << std::endl;
+
+	std::cout << std::endl;
+	retrieve(products, chosenColumns); //TODO added for testing purposes, remove later
 }
 
 void Database::updateData(const std::unordered_set<std::string>& chosenColumns)
@@ -19,15 +28,31 @@ void Database::deleteData(const std::unordered_set<std::string>& chosenColumns)
 void Database::retrieveData(const std::unordered_set<std::string>& chosenColumns)
 {
 	std::cout << std::endl;
-	iterateThroughTable(products, chosenColumns);
+	retrieve(products, chosenColumns);
 	std::cout << std::endl;
-	iterateThroughTable(customers, chosenColumns);
+	retrieve(customers, chosenColumns);
 	std::cout << std::endl;
-	iterateThroughTable(orders, chosenColumns);
+	retrieve(orders, chosenColumns);
 	std::cout << std::endl;
 }
 
-void Database::iterateThroughTable(std::array<std::vector<std::string>, 3> table, const std::unordered_set<std::string>& chosenColumns) const
+void Database::add(std::array<std::vector<std::string>, 3>& table, const std::unordered_set<std::string>& chosenColumns)
+{
+	for (auto& column : table)
+	{
+		if (chosenColumns.find(column[0]) != chosenColumns.end())
+		{
+			std::cout << "What do you want to add to column " << column[0] << ": ";
+			column.push_back(userInterface.getInputWord()); //TODO validate user input
+		}
+		else
+		{
+			column.push_back("NULL"); //TODO also added to columns that werent chosen bua are in a diffrent table
+		}
+	}
+}
+
+void Database::retrieve(std::array<std::vector<std::string>, 3> table, const std::unordered_set<std::string>& chosenColumns) const
 {
 	for (const auto& column : table)
 	{

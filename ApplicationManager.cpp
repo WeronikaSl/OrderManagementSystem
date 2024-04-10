@@ -14,5 +14,5 @@ int AppplicationManager::chooseMenuOption() const //TODO is it a good method nam
 
 void AppplicationManager::run()
 {
-	database.performOperation(static_cast<DatabaseOpetation>(chooseMenuOption()));
+	database.performOperation(static_cast<DatabaseOpetation>(chooseMenuOption())); //TODO add loop to be able to choose multiple options
 }
