@@ -7,3 +7,10 @@ int UserInterface::getInputNumber() const
 	std::cin >> input;
     return input;
 }
+
+std::string UserInterface::getInputWord() const
+{
+	std::string input{};
+	std::cin >> input;
+	return input;
+}
