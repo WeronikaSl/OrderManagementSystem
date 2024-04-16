@@ -1,126 +1,109 @@
 #include "Database.hpp"
 #include <iostream>
+#include <occi.h>
 
-void Database::addData(const std::unordered_set<std::string>& chosenColumns)
+using namespace oracle::occi;
+
+void Database::addData() //TODO implement validating user imput
 {
-	std::cout << std::endl;
-	add(products, chosenColumns);
-	std::cout << std::endl;
-	add(customers, chosenColumns);
-	std::cout << std::endl;
-	add(orders, chosenColumns);
-	std::cout << std::endl;
-
-	std::cout << std::endl;
-	retrieve(products, chosenColumns); //TODO added for testing purposes, remove later
+	std::cout << "Data added" << std::endl; //TODO implement logic 
 }
 
-void Database::updateData(const std::unordered_set<std::string>& chosenColumns)
+void Database::updateData() //TODO implement validating user imput
 {
 	std::cout << "Data updated" << std::endl; //TODO implement logic 
 }
 
-void Database::deleteData(const std::unordered_set<std::string>& chosenColumns)
+void Database::deleteData() //TODO implement validating user imput
 {
 	std::cout << "Data removed" << std::endl; //TODO implement logic 
 }
 
-void Database::retrieveData(const std::unordered_set<std::string>& chosenColumns)
+void Database::retrieveData(const std::unordered_set<std::string>& chosenColumns) //TODO implement exception handling
 {
+	Environment* env = Environment::createEnvironment();
+
+	std::string user = "OrderManagementSystem "; //local user for pluggable database XEPDB1
+	std::string pass = "123456";
+	std::string constr = "localhost:1521/XEPDB1"; //default pluggable database from Oracle Database Express Edition (XE)
+
+	Connection* conn = env->createConnection(user, pass, constr);
+
+	Statement* stmt = conn->createStatement();
+
+	stmt->setSQL("SELECT PRODUCT_ID, PRODUCT_NAME, PRICE_PER_UNIT FROM PRODUCTS");
+
+	ResultSet* rs = stmt->executeQuery();
+
 	std::cout << std::endl;
-	retrieve(products, chosenColumns);
+
+	while (rs->next()) //TODO FIX code copied
+	{
+		std::string PRODUCT_ID = rs->getString(1);
+		std::string PRODUCT_NAME = rs->getString(2);
+		int PRICE_PER_UNIT = rs->getInt(3);
+
+		std::cout << PRODUCT_ID << " " << PRODUCT_NAME << " " << PRICE_PER_UNIT << std::endl;
+	}
+
 	std::cout << std::endl;
-	retrieve(customers, chosenColumns);
+
+	stmt->setSQL("SELECT CUSTOMER_ID, CUSTOMER_NAME, PHONE_NUMBER FROM CUSTOMERS");
+
+	rs = stmt->executeQuery();
+
+	while (rs->next()) //TODO FIX code copied
+	{
+		std::string CUSTOMER_ID = rs->getString(1);
+		std::string CUSTOMER_NAME = rs->getString(2);
+		int PHONE_NUMBER = rs->getInt(3);
+
+		std::cout << CUSTOMER_ID << " " << CUSTOMER_NAME << " " << PHONE_NUMBER << std::endl;
+	}
+
 	std::cout << std::endl;
-	retrieve(orders, chosenColumns);
-	std::cout << std::endl;
+
+	stmt->setSQL("SELECT ORDER_ID, CUSTOMER_ID, PRODUCT_ID FROM ORDERS");
+
+	rs = stmt->executeQuery();
+
+	while (rs->next()) //TODO FIX code copied
+	{
+		int ORDER_ID = rs->getInt(1);
+		int CUSTOMER_ID = rs->getInt(2);
+		int PRODUCT_ID = rs->getInt(3);
+
+		std::cout << ORDER_ID << " " << CUSTOMER_ID << " " << PRODUCT_ID << std::endl;
+	}
+
+	stmt->closeResultSet(rs);
+	conn->terminateStatement(stmt);
+	env->terminateConnection(conn);
+	Environment::terminateEnvironment(env);
 }
 
-void Database::add(std::array<std::vector<std::string>, 3>& table, const std::unordered_set<std::string>& chosenColumns)
-{
-	for (auto& column : table)
-	{
-		if (chosenColumns.find(column[0]) != chosenColumns.end())
-		{
-			std::cout << "What do you want to add to column " << column[0] << ": ";
-			column.push_back(userInterface.getInputWord()); //TODO validate user input
-		}
-		else
-		{
-			column.push_back("NULL"); //TODO also added to columns that werent chosen bua are in a diffrent table
-		}
-	}
-}
-
-void Database::retrieve(std::array<std::vector<std::string>, 3> table, const std::unordered_set<std::string>& chosenColumns) const
-{
-	for (const auto& column : table)
-	{
-		if (chosenColumns.find(column[0]) != chosenColumns.end())
-		{
-			for (const auto& elem : column)
-			{
-				std::cout << elem << std::endl;
-			}
-			std::cout << std::endl;
-		}
-	}
-}
 
 void Database::displayColumns() const
 {
-	std::cout << std::endl << "PRODUCTS: " << std::endl;
-	for (const auto& column : products)
-	{
-		std::cout << column[0] << std::endl;
-	}
-
-	std::cout << std::endl << "CUSTOMERS: " << std::endl;
-	for (const auto& column : customers)
-	{
-		std::cout << column[0] << std::endl;
-	}
-
-	std::cout << std::endl << "ORDERS: " << std::endl;
-	for (const auto& column : orders)
-	{
-		std::cout << column[0] << std::endl;
-	}
+	//TODO implement displaying columns to choose
 }
 
 std::unordered_set<std::string> Database::chooseColumns() const
 {
-	std::cout << "How many columns do you want to choose: ";
-	int amountOfColumns{ userInterface.getInputNumber() };
-
-	std::cout << std::endl << "Columns: " << std::endl;
-	displayColumns();
-
-	std::cout << std::endl;
-
-	std::unordered_set<std::string> columns{}; //TODO change to std::array? max nr of columns is known
-	std::string columnName{};
-
-	for (int i{ 0 }; i < amountOfColumns; ++i)
-	{
-		std::cout << "Enter name of column nr " << i << ": ";
-		std::cin >> columnName;
-		columns.insert(columnName);
-	}
-	return columns;
+	return std::unordered_set<std::string>{}; //TODO implement choosing columns
 }
 
 void Database::performOperation(DatabaseOpetation chosenOperation)
 {
 	switch (chosenOperation) {
 	case DatabaseOpetation::ADD:
-		addData(chooseColumns());
+		addData();
 		break;
 	case DatabaseOpetation::UPDATE:
-		updateData(chooseColumns());
+		updateData();
 		break;
 	case DatabaseOpetation::DELETE:
-		deleteData(chooseColumns());
+		deleteData();
 		break;
 	case DatabaseOpetation::RETRIEVE:
 		retrieveData(chooseColumns());
