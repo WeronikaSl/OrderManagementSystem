@@ -8,6 +8,10 @@
 #include <string>
 #include <unordered_set>
 
+#include <occi.h>
+
+using namespace oracle::occi;
+
 class Database
 {
 private:
@@ -15,8 +19,11 @@ private:
 
 	void addData(); 
 	void updateData();
-	void deleteData();
+	void deleteDataFromTable();
+	void deleteRowIfPossible(Connection*, std::string, std::string, Id) const;
+	void deleteRow(Connection*, std::string, std::string, Id) const;
 	void retrieveData(const std::unordered_set<std::string>&); //TODO check if you dont prevent copy elision here
+	void displayTable(Connection*, SqlStatement) const;
 	void displayColumns() const;
 	std::unordered_set<std::string> chooseColumns() const;
 
