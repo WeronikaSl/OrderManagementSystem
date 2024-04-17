@@ -17,8 +17,10 @@ class Database
 private:
 	UserInterface userInterface;
 
-	void addData(); 
-	void updateData();
+	void addDataIntoTable(); 
+	void insertRow(Connection*, std::string) const;
+	void updateDataInTable();
+	void updateRow(Connection*, std::string) const;
 	void deleteDataFromTable();
 	void deleteRowIfPossible(Connection*, std::string, std::string, Id) const;
 	void deleteRow(Connection*, std::string, std::string, Id) const;

@@ -1,15 +1,143 @@
 #include "Database.hpp"
 #include <iostream>
 
+//TODO FIX SPAGHETTI CODE, create seperate classes for each Table 
 
-void Database::addData() //TODO implement validating user imput
+
+void Database::addDataIntoTable() //TODO implement validating user imput
 {
-	std::cout << "Data added" << std::endl; //TODO implement logic 
+
+	Environment* env = Environment::createEnvironment(); //TODO create method? Or maybe use RAII?
+
+	std::string user = "OrderManagementSystem "; //local user for pluggable database XEPDB1
+	std::string pass = "123456";
+	std::string constr = "localhost:1521/XEPDB1"; //default pluggable database from Oracle Database Express Edition (XE)
+
+	Connection* conn = env->createConnection(user, pass, constr);
+
+	std::cout << "Which table do you want to add data to: "
+		<< "Customers - Press 0" << std::endl
+		<< "Products - Press 1" << std::endl
+		<< "Orders - Press 2" << std::endl
+		<< "Your choice: ";
+	Table table{ static_cast<Table>(userInterface.getInputNumber()) };
+
+	switch (table)
+	{
+	case Table::CUSTOMERS:
+		insertRow(conn, "CUSTOMERS");
+		break;
+	case Table::PRODUCTS:
+		insertRow(conn, "PRODUCTS");
+		break;
+	case Table::ORDERS:
+		insertRow(conn, "ORDERS");
+		break;
+	default:
+		std::cout << "Nothing" << std::endl; //TODO implement
+	}
+
+	env->terminateConnection(conn);
+	Environment::terminateEnvironment(env);
 }
 
-void Database::updateData() //TODO implement validating user imput
+void Database::insertRow(Connection* conn, std::string tableName) const
 {
-	std::cout << "Data updated" << std::endl; //TODO implement logic 
+	std::cout << "Enter value for column 1: ";
+	std::string value1{ userInterface.getInputWord() };
+
+	std::cout << "Enter value for column 2: ";
+	std::string value2{ userInterface.getInputWord() };
+
+	std::cout << "Enter value for column 3: ";
+	std::string value3{ userInterface.getInputWord() };
+
+	Statement* stmt = conn->createStatement();
+	SqlStatement sqlStatement{ "INSERT INTO " + tableName + " VALUES('" + value1 + "', '" + value2 + "', '" + value3 + "')" }; //TODO check - is it ok to put '' around integer values?
+	stmt->executeUpdate(sqlStatement); //TODO - should column names be provided?
+	conn->terminateStatement(stmt);
+}
+
+void Database::updateDataInTable() //TODO implement validating user imput
+{
+	Environment* env = Environment::createEnvironment(); //TODO create method? Or maybe use RAII?
+
+	std::string user = "OrderManagementSystem "; //local user for pluggable database XEPDB1
+	std::string pass = "123456";
+	std::string constr = "localhost:1521/XEPDB1"; //default pluggable database from Oracle Database Express Edition (XE)
+
+	Connection* conn = env->createConnection(user, pass, constr);
+
+	std::cout << "Which table do you want to update data in: "
+		<< "Customers - Press 0" << std::endl
+		<< "Products - Press 1" << std::endl
+		<< "Orders - Press 2" << std::endl
+		<< "Your choice: ";
+	Table table{ static_cast<Table>(userInterface.getInputNumber()) };
+
+	switch (table)
+	{
+	case Table::CUSTOMERS:
+	{
+		std::cout << "Enter ID that you want to update: ";
+		std::string rowId{ userInterface.getInputWord() };
+
+		std::cout << "Enter column name that you want to update: ";
+		std::string columnName{ userInterface.getInputWord() };
+
+		std::cout << "Enter value that you want to update it to: ";
+		std::string newValue{ userInterface.getInputWord() };
+
+		Statement* stmt = conn->createStatement();
+		SqlStatement sqlStatement{ "UPDATE CUSTOMERS SET " + columnName + " = '" + newValue + "' WHERE CUSTOMER_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
+		stmt->executeUpdate(sqlStatement);
+		conn->terminateStatement(stmt);
+		break;
+	}
+	case Table::PRODUCTS:
+	{
+		std::cout << "Enter ID that you want to update: ";
+		std::string rowId{ userInterface.getInputWord() };
+
+		std::cout << "Enter column name that you want to update: ";
+		std::string columnName{ userInterface.getInputWord() };
+
+		std::cout << "Enter value that you want to update it to: ";
+		std::string newValue{ userInterface.getInputWord() };
+
+		Statement* stmt = conn->createStatement();
+		SqlStatement sqlStatement{ "UPDATE PRODUCTS SET " + columnName + " = '" + newValue + "' WHERE PRODUCT_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
+		stmt->executeUpdate(sqlStatement);
+		conn->terminateStatement(stmt);
+		break;
+	}
+	case Table::ORDERS:
+	{
+		std::cout << "Enter ID that you want to update: ";
+		std::string rowId{ userInterface.getInputWord() };
+
+		std::cout << "Enter column name that you want to update: ";
+		std::string columnName{ userInterface.getInputWord() };
+
+		std::cout << "Enter value that you want to update it to: ";
+		std::string newValue{ userInterface.getInputWord() };
+
+		Statement* stmt = conn->createStatement();
+		SqlStatement sqlStatement{ "UPDATE ORDERS SET " + columnName + " = '" + newValue + "' WHERE ORDERS_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
+		stmt->executeUpdate(sqlStatement);
+		conn->terminateStatement(stmt);
+		break;
+	}
+	default:
+		std::cout << "Nothing" << std::endl; //TODO implement
+	}
+
+	env->terminateConnection(conn);
+	Environment::terminateEnvironment(env);
+}
+
+void Database::updateRow(Connection* conn, std::string tableName) const
+{
 }
 
 void Database::deleteDataFromTable() //TODO implement validating user imput
@@ -143,10 +271,10 @@ void Database::performOperation(DatabaseOpetation chosenOperation)
 {
 	switch (chosenOperation) {
 	case DatabaseOpetation::ADD:
-		addData();
+		addDataIntoTable();
 		break;
 	case DatabaseOpetation::UPDATE:
-		updateData();
+		updateDataInTable();
 		break;
 	case DatabaseOpetation::DELETE:
 		deleteDataFromTable();
