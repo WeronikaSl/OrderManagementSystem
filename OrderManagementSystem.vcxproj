@@ -135,13 +135,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ApplicationManager.cpp" />
+    <ClCompile Include="Customers.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Orders.cpp" />
+    <ClCompile Include="Products.cpp" />
+    <ClCompile Include="Table.cpp" />
     <ClCompile Include="UserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationManager.hpp" />
+    <ClInclude Include="Customers.hpp" />
     <ClInclude Include="Database.hpp" />
+    <ClInclude Include="Orders.hpp" />
+    <ClInclude Include="Products.hpp" />
+    <ClInclude Include="Table.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="UserInterface.hpp" />
   </ItemGroup>

@@ -1,4 +1,9 @@
 #include "Database.hpp"
+
+#include "Customers.hpp"
+#include "Products.hpp"
+#include "Orders.hpp"
+
 #include <iostream>
 
 //TODO FIX SPAGHETTI CODE, create seperate classes for each Table 
@@ -20,42 +25,27 @@ void Database::addDataIntoTable() //TODO implement validating user imput
 		<< "Products - Press 1" << std::endl
 		<< "Orders - Press 2" << std::endl
 		<< "Your choice: ";
-	Table table{ static_cast<Table>(userInterface.getInputNumber()) };
+	TableType tableType{ static_cast<TableType>(userInterface.getInputNumber()) };
 
-	switch (table)
+	switch (tableType) //TODO create factory method 
 	{
-	case Table::CUSTOMERS:
-		insertRow(conn, "CUSTOMERS");
+	case TableType::CUSTOMERS:
+		table = std::make_unique<Customers>();
 		break;
-	case Table::PRODUCTS:
-		insertRow(conn, "PRODUCTS");
+	case TableType::PRODUCTS:
+		table = std::make_unique<Products>();
 		break;
-	case Table::ORDERS:
-		insertRow(conn, "ORDERS");
+	case TableType::ORDERS:
+		table = std::make_unique<Orders>();
 		break;
 	default:
 		std::cout << "Nothing" << std::endl; //TODO implement
 	}
 
+	table->addData(conn);
+
 	env->terminateConnection(conn);
 	Environment::terminateEnvironment(env);
-}
-
-void Database::insertRow(Connection* conn, std::string tableName) const
-{
-	std::cout << "Enter value for column 1: ";
-	std::string value1{ userInterface.getInputWord() };
-
-	std::cout << "Enter value for column 2: ";
-	std::string value2{ userInterface.getInputWord() };
-
-	std::cout << "Enter value for column 3: ";
-	std::string value3{ userInterface.getInputWord() };
-
-	Statement* stmt = conn->createStatement();
-	SqlStatement sqlStatement{ "INSERT INTO " + tableName + " VALUES('" + value1 + "', '" + value2 + "', '" + value3 + "')" }; //TODO check - is it ok to put '' around integer values?
-	stmt->executeUpdate(sqlStatement); //TODO - should column names be provided?
-	conn->terminateStatement(stmt);
 }
 
 void Database::updateDataInTable() //TODO implement validating user imput
@@ -73,71 +63,27 @@ void Database::updateDataInTable() //TODO implement validating user imput
 		<< "Products - Press 1" << std::endl
 		<< "Orders - Press 2" << std::endl
 		<< "Your choice: ";
-	Table table{ static_cast<Table>(userInterface.getInputNumber()) };
+	TableType tableType{ static_cast<TableType>(userInterface.getInputNumber()) };
 
-	switch (table)
+	switch (tableType) //TODO create factory method
 	{
-	case Table::CUSTOMERS:
-	{
-		std::cout << "Enter ID that you want to update: ";
-		std::string rowId{ userInterface.getInputWord() };
-
-		std::cout << "Enter column name that you want to update: ";
-		std::string columnName{ userInterface.getInputWord() };
-
-		std::cout << "Enter value that you want to update it to: ";
-		std::string newValue{ userInterface.getInputWord() };
-
-		Statement* stmt = conn->createStatement();
-		SqlStatement sqlStatement{ "UPDATE CUSTOMERS SET " + columnName + " = '" + newValue + "' WHERE CUSTOMER_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
-		stmt->executeUpdate(sqlStatement);
-		conn->terminateStatement(stmt);
+	case TableType::CUSTOMERS:
+		table = std::make_unique<Customers>();
 		break;
-	}
-	case Table::PRODUCTS:
-	{
-		std::cout << "Enter ID that you want to update: ";
-		std::string rowId{ userInterface.getInputWord() };
-
-		std::cout << "Enter column name that you want to update: ";
-		std::string columnName{ userInterface.getInputWord() };
-
-		std::cout << "Enter value that you want to update it to: ";
-		std::string newValue{ userInterface.getInputWord() };
-
-		Statement* stmt = conn->createStatement();
-		SqlStatement sqlStatement{ "UPDATE PRODUCTS SET " + columnName + " = '" + newValue + "' WHERE PRODUCT_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
-		stmt->executeUpdate(sqlStatement);
-		conn->terminateStatement(stmt);
+	case TableType::PRODUCTS:
+		table = std::make_unique<Products>();
 		break;
-	}
-	case Table::ORDERS:
-	{
-		std::cout << "Enter ID that you want to update: ";
-		std::string rowId{ userInterface.getInputWord() };
-
-		std::cout << "Enter column name that you want to update: ";
-		std::string columnName{ userInterface.getInputWord() };
-
-		std::cout << "Enter value that you want to update it to: ";
-		std::string newValue{ userInterface.getInputWord() };
-
-		Statement* stmt = conn->createStatement();
-		SqlStatement sqlStatement{ "UPDATE ORDERS SET " + columnName + " = '" + newValue + "' WHERE ORDERS_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
-		stmt->executeUpdate(sqlStatement);
-		conn->terminateStatement(stmt);
+	case TableType::ORDERS:
+		table = std::make_unique<Orders>();
 		break;
-	}
 	default:
 		std::cout << "Nothing" << std::endl; //TODO implement
 	}
 
+	table->updateData(conn);
+
 	env->terminateConnection(conn);
 	Environment::terminateEnvironment(env);
-}
-
-void Database::updateRow(Connection* conn, std::string tableName) const
-{
 }
 
 void Database::deleteDataFromTable() //TODO implement validating user imput
@@ -158,60 +104,28 @@ void Database::deleteDataFromTable() //TODO implement validating user imput
 		<< "Products - Press 1" << std::endl
 		<< "Orders - Press 2" << std::endl
 		<< "Your choice: ";
-	Table table{ static_cast<Table>(userInterface.getInputNumber()) };
+	TableType tableType{ static_cast<TableType>(userInterface.getInputNumber()) };
 
-	switch (table)
+	switch (tableType) //TODO create factory method
 	{
-	case Table::CUSTOMERS:
-		deleteRowIfPossible(conn, "CUSTOMERS", "CUSTOMER_ID", idToRemove);
+	case TableType::CUSTOMERS:
+		table = std::make_unique<Customers>();
 		break;
-	case Table::PRODUCTS:
-		deleteRowIfPossible(conn, "PRODUCTS", "PRODUCT_ID", idToRemove);
+	case TableType::PRODUCTS:
+		table = std::make_unique<Products>();
 		break;
-	case Table::ORDERS:
-		deleteRow(conn, "ORDERS", "ORDER_ID", idToRemove);
+	case TableType::ORDERS:
+		table = std::make_unique<Orders>();
 		break;
 	default:
 		std::cout << "Nothing" << std::endl; //TODO implement
 	}
+
+	table->deleteData(conn, idToRemove);
 	
 	env->terminateConnection(conn);
 	Environment::terminateEnvironment(env);
 }
-
-void Database::deleteRowIfPossible(Connection* conn, std::string tableName, std::string columnName, Id idToRemove) const //TODO rethink this design, its not really OCP..
-{
-	Statement* stmt = conn->createStatement("SELECT " + columnName + " FROM ORDERS");
-	ResultSet* rs = stmt->executeQuery();
-	std::unordered_set<Id> idsFromOrders{};
-
-	while (rs->next())
-	{
-		Id id = rs->getInt(1);
-		idsFromOrders.insert(id);
-	}
-
-	if (idsFromOrders.find(idToRemove) == idsFromOrders.end())
-	{
-		deleteRow(conn, tableName, columnName, idToRemove);
-	}
-	else
-	{
-		std::cout << "You can't remove this id, it is present in orders" << std::endl;
-	}
-
-	stmt->closeResultSet(rs);
-	conn->terminateStatement(stmt);
-}
-
-void Database::deleteRow(Connection* conn, std::string tableName, std::string columnName, Id idToRemove) const
-{
-	Statement* stmt = conn->createStatement();
-	SqlStatement sqlStatement{ "DELETE FROM " + tableName + " WHERE " + columnName + " = " + std::to_string(idToRemove) };
-	stmt->executeUpdate(sqlStatement);
-	conn->terminateStatement(stmt);
-}
-
 
 void Database::retrieveData(const std::unordered_set<std::string>& chosenColumns) //TODO implement exception handling
 {
@@ -223,39 +137,18 @@ void Database::retrieveData(const std::unordered_set<std::string>& chosenColumns
 
 	Connection* conn = env->createConnection(user, pass, constr);
 
-	SqlStatement sqlQueryForCustomers{ "SELECT CUSTOMER_ID, CUSTOMER_NAME, PHONE_NUMBER FROM CUSTOMERS" };
-	displayTable(conn, sqlQueryForCustomers);
+	table = std::make_unique<Customers>();
+	table->retrieveData(conn);
 
-	SqlStatement sqlQueryForProducts{ "SELECT PRODUCT_ID, PRODUCT_NAME, PRICE_PER_UNIT FROM PRODUCTS" };
-	displayTable(conn, sqlQueryForProducts);
+	table = std::make_unique<Products>();
+	table->retrieveData(conn);
 
-	SqlStatement sqlQueryForOrders{ "SELECT ORDER_ID, CUSTOMER_ID, PRODUCT_ID FROM ORDERS" };
-	displayTable(conn, sqlQueryForOrders);
+	table = std::make_unique<Orders>();
+	table->retrieveData(conn);
 
 	env->terminateConnection(conn);
 	Environment::terminateEnvironment(env);
 }
-
-void Database::displayTable(Connection* conn, SqlStatement sqlQuery) const
-{
-	Statement* stmt = conn->createStatement();
-	stmt->setSQL(sqlQuery);
-	ResultSet* rs = stmt->executeQuery();
-
-	std::cout << std::endl;
-
-	while (rs->next())
-	{
-		std::cout << rs->getString(1) << " " << rs->getString(2) << " " << rs->getInt(3) << std::endl;
-	}
-
-	std::cout << std::endl;
-
-	stmt->closeResultSet(rs);
-	conn->terminateStatement(stmt);
-}
-
-
 
 void Database::displayColumns() const
 {

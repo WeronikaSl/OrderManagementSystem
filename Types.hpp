@@ -3,7 +3,7 @@
 
 enum class DatabaseOpetation {ADD, UPDATE, DELETE, RETRIEVE};
 
-enum class Table {CUSTOMERS, PRODUCTS, ORDERS};
+enum class TableType {CUSTOMERS, PRODUCTS, ORDERS};
 
 using SqlStatement = std::string;
 using Id = int;
