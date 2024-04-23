@@ -4,11 +4,15 @@
 
 int AppplicationManager::chooseMenuOption() const //TODO is it a good method name?
 {
-	std::cout << "What do you want to do?" << std::endl
-		<< "Add data - choose 0" << std::endl
-		<< "Update data - choose 1" << std::endl
-		<< "Delete data - choose 2" << std::endl
-		<< "Retrieve data - choose 3" << std::endl;
+	int menuOption{ 0 };
+	std::cout << "What do you want to do?" << std::endl;
+
+	for (std::string operationName : database.getOperationsNames())
+	{
+		std::cout << operationName << " - choose " << menuOption << std::endl;
+		++menuOption;
+	}
+
 	return userInterface.getInputNumber();
 }
 
