@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
 
+//this class shouln't know what input will be used for
+
 class UserInterface
 {
 public:
-	int getInputNumber() const; //TODO this class shouln't know what input will be used for 
+	int getInputNumber() const;
 	std::string getInputWord() const;
 };

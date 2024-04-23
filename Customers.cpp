@@ -60,7 +60,7 @@ void Customers::deleteData(Connection* conn, Id idToRemove) const
 	}
 	else
 	{
-		std::cout << "You can't remove this id, it is present in orders" << std::endl; //TODO ?? maybe orders can has a method that will return ids?
+		std::cout << "You can't remove this id" << std::endl;
 	}
 
 	stmt->closeResultSet(rs);

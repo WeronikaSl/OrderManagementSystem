@@ -7,55 +7,47 @@
 
 #include <iostream> 
 
-void Database::addDataIntoTable() //TODO implement validating user imput
+void Database::addDataIntoTable()
 {
-	std::cout << "Which table do you want to add data to: "
-		<< "Customers - Press 0" << std::endl
-		<< "Products - Press 1" << std::endl
-		<< "Orders - Press 2" << std::endl
-		<< "Your choice: ";
-
+	displayTableNames("Which table do you want to add data to: ");
 	table = TableFactory::getTable(static_cast<TableType>(userInterface.getInputNumber()));
 	table->addData(databaseConnection.getConnection());
 }
 
-void Database::updateDataInTable() //TODO implement validating user imput
+void Database::updateDataInTable()
 {
-	std::cout << "Which table do you want to update data in: "
-		<< "Customers - Press 0" << std::endl
-		<< "Products - Press 1" << std::endl
-		<< "Orders - Press 2" << std::endl
-		<< "Your choice: ";
-
+	displayTableNames("Which table do you want to update data in: ");
 	table = TableFactory::getTable(static_cast<TableType>(userInterface.getInputNumber()));
 	table->updateData(databaseConnection.getConnection());
 }
 
-void Database::deleteDataFromTable() //TODO implement validating user imput
+void Database::deleteDataFromTable()
 {
 	std::cout << "Enter ID that you want to remove: ";
 	Id idToRemove{ userInterface.getInputNumber() };
 
-	std::cout << "Which table do you want to delete data from: "
-		<< "Customers - Press 0" << std::endl
-		<< "Products - Press 1" << std::endl
-		<< "Orders - Press 2" << std::endl
-		<< "Your choice: ";
-
+	displayTableNames("Which table do you want to delete data from: ");
 	table = TableFactory::getTable(static_cast<TableType>(userInterface.getInputNumber()));
 	table->deleteData(databaseConnection.getConnection(), idToRemove);
 }
 
-void Database::retrieveData() //TODO implement exception handling
+void Database::retrieveData()
 {
-	std::cout << "Which table do you want to retrive data from: "
-		<< "Customers - Press 0" << std::endl
-		<< "Products - Press 1" << std::endl
-		<< "Orders - Press 2" << std::endl
-		<< "Your choice: ";
-
+	displayTableNames("Which table do you want to retrive data from: ");
 	table = TableFactory::getTable(static_cast<TableType>(userInterface.getInputNumber()));
 	table->retrieveData(databaseConnection.getConnection());
+}
+
+void Database::displayTableNames(std::string statament) const
+{
+	std::cout << statament << std::endl;
+
+	for (int i{ 0 }; i < amountOfTableNames; ++i)
+	{
+		std::cout << tableNames[i] << " - press " << i << std::endl;
+	}
+
+	std::cout << "Your choice: ";
 }
 
 void Database::performOperation(DatabaseOpetation chosenOperation)
@@ -74,7 +66,7 @@ void Database::performOperation(DatabaseOpetation chosenOperation)
 		retrieveData();
 		break;
 	default:
-		std::cout << "nothing" << std::endl; //TODO implement logic 
+		std::cout << "There's no such option" << std::endl;
 	}
 }
 

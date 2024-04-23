@@ -2,15 +2,13 @@
 #include "Types.hpp"
 #include <iostream>
 
-int AppplicationManager::chooseMenuOption() const //TODO is it a good method name?
+int AppplicationManager::chooseMenuOption() const
 {
-	int menuOption{ 0 };
 	std::cout << "What do you want to do?" << std::endl;
 
-	for (std::string operationName : database.getOperationsNames())
+	for (int i{ 0 }; i < database.getOperationsNames().size(); ++i)
 	{
-		std::cout << operationName << " - choose " << menuOption << std::endl;
-		++menuOption;
+		std::cout << database.getOperationsNames()[i] << " - choose " << i << std::endl;
 	}
 
 	return userInterface.getInputNumber();
@@ -18,5 +16,5 @@ int AppplicationManager::chooseMenuOption() const //TODO is it a good method nam
 
 void AppplicationManager::run()
 {
-	database.performOperation(static_cast<DatabaseOpetation>(chooseMenuOption())); //TODO add loop to be able to choose multiple options
+	database.performOperation(static_cast<DatabaseOpetation>(chooseMenuOption()));
 }

@@ -20,7 +20,7 @@ std::unique_ptr<Table> TableFactory::getTable(TableType tableType)
 		result = std::make_unique<Orders>();
 		break;
 	//default:
-		 //TODO implement error handling
+		 //exception handling
 	}
 
     return result;

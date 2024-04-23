@@ -60,7 +60,7 @@ void Products::deleteData(Connection* conn, Id idToRemove) const
 	}
 	else
 	{
-		std::cout << "You can't remove this id, it is present in orders" << std::endl; //TODO ??
+		std::cout << "You can't remove this id" << std::endl;
 	}
 
 	stmt->closeResultSet(rs);

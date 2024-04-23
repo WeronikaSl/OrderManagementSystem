@@ -14,7 +14,7 @@ protected:
 
 	void displayTable(Connection*, SqlStatement) const;
 public:
-	virtual void addData(Connection*) const = 0; //TODO one function created on previous commit if you want to use it
+	virtual void addData(Connection*) const = 0;
 	virtual void updateData(Connection*) const = 0;
 	virtual void deleteData(Connection*, Id) const = 0;
 	virtual void retrieveData(Connection*) const = 0;

@@ -28,7 +28,7 @@ private:
 	void updateDataInTable();
 	void deleteDataFromTable();
 	void retrieveData();
-
+	void displayTableNames(std::string) const;
 public:
 	void performOperation(DatabaseOpetation);
 	std::array<std::string, amountOfOperationsNames> getOperationsNames() const;
