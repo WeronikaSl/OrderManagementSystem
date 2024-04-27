@@ -1,5 +1,7 @@
 #include "ApplicationManager.hpp"
+
 #include "Types.hpp"
+
 #include <iostream>
 
 int AppplicationManager::chooseMenuOption() const
@@ -16,5 +18,5 @@ int AppplicationManager::chooseMenuOption() const
 
 void AppplicationManager::run()
 {
-	database.performOperation(static_cast<DatabaseOpetation>(chooseMenuOption()));
+	database.performOperation(static_cast<DatabaseOpetationType>(chooseMenuOption()));
 }

@@ -17,8 +17,8 @@ void Customers::addData(Connection* conn) const
 	std::string value3{ userInterface.getInputWord() };
 
 	Statement* stmt = conn->createStatement();
-	SqlStatement sqlStatement{ "INSERT INTO CUSTOMERS VALUES('" + value1 + "', '" + value2 + "', '" + value3 + "')" }; //TODO check - is it ok to put '' around integer values?
-	stmt->executeUpdate(sqlStatement); //TODO - should column names be provided?
+	SqlStatement sqlStatement{ "INSERT INTO CUSTOMERS (CUSTOMER_ID, CUSTOMER_NAME, PHONE_NUMBER) VALUES(" + value1 + ", '" + value2 + "', " + value3 + ")" };
+	stmt->executeUpdate(sqlStatement);
 	conn->terminateStatement(stmt);
 }
 
@@ -34,14 +34,14 @@ void Customers::updateData(Connection* conn) const
 	std::string newValue{ userInterface.getInputWord() };
 
 	Statement* stmt = conn->createStatement();
-	SqlStatement sqlStatement{ "UPDATE CUSTOMERS SET " + columnName + " = '" + newValue + "' WHERE CUSTOMER_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
+	SqlStatement sqlStatement{ "UPDATE CUSTOMERS SET " + columnName + " = '" + newValue + "' WHERE CUSTOMER_ID = " + rowId }; //'' put around integer values done for simplicity, it souldn't be done like this because it forces database to do implicit conversion and it slows down the program which would be significant for larger amounts of data
 	stmt->executeUpdate(sqlStatement);
 	conn->terminateStatement(stmt);
 }
 
 void Customers::deleteData(Connection* conn, Id idToRemove) const
 {
-	Statement* stmt = conn->createStatement("SELECT CUSTOMER_ID FROM ORDERS"); //TODO ?? maybe orders can has a method that will return ids?
+	Statement* stmt = conn->createStatement("SELECT CUSTOMER_ID FROM ORDERS");
 	ResultSet* rs = stmt->executeQuery();
 	std::unordered_set<Id> idsFromOrders{}; 
 

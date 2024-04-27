@@ -1,4 +1,5 @@
 #include "UserInterface.hpp"
+
 #include <iostream>
 
 int UserInterface::getInputNumber() const

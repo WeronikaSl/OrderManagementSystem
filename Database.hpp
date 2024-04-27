@@ -21,15 +21,15 @@ private:
 	std::unique_ptr<Table> table{ nullptr };
 	static constexpr int amountOfOperationsNames{ 4 };
 	std::array<std::string, amountOfOperationsNames> operationsNames{ "Add data" , "Update data" , "Delete data" , "Retrieve data" };
-	static constexpr int amountOfTableNames{ 3 };
-	std::array<std::string, amountOfTableNames> tableNames{ "Customers", "Products", "Orders" };
+	static constexpr int amountOfTablesNames{ 3 };
+	std::array<std::string, amountOfTablesNames> tableNames{ "Customers", "Products", "Orders" };
 
 	void addDataIntoTable(); 
 	void updateDataInTable();
 	void deleteDataFromTable();
-	void retrieveData();
+	void retrieveDataFromTable();
 	void displayTableNames(std::string) const;
 public:
-	void performOperation(DatabaseOpetation);
+	void performOperation(DatabaseOpetationType);
 	std::array<std::string, amountOfOperationsNames> getOperationsNames() const;
 };

@@ -17,8 +17,8 @@ void Products::addData(Connection* conn) const
 	std::string value3{ userInterface.getInputWord() };
 
 	Statement* stmt = conn->createStatement();
-	SqlStatement sqlStatement{ "INSERT INTO PRODUCTS VALUES('" + value1 + "', '" + value2 + "', '" + value3 + "')" }; //TODO check - is it ok to put '' around integer values?
-	stmt->executeUpdate(sqlStatement); //TODO - should column names be provided?
+	SqlStatement sqlStatement{ "INSERT INTO PRODUCTS (PRODUCT_ID, PRODUCT_NAME, PRICE_PER_UNIT) VALUES(" + value1 + ", '" + value2 + "', " + value3 + ")" };
+	stmt->executeUpdate(sqlStatement);
 	conn->terminateStatement(stmt);
 }
 
@@ -34,7 +34,7 @@ void Products::updateData(Connection* conn) const
 	std::string newValue{ userInterface.getInputWord() };
 
 	Statement* stmt = conn->createStatement();
-	SqlStatement sqlStatement{ "UPDATE PRODUCTS SET " + columnName + " = '" + newValue + "' WHERE PRODUCT_ID = " + rowId }; //TODO check - is it ok to put '' around integer values?
+	SqlStatement sqlStatement{ "UPDATE PRODUCTS SET " + columnName + " = '" + newValue + "' WHERE PRODUCT_ID = " + rowId }; //'' put around integer values done for simplicity, it souldn't be done like this because it forces database to do implicit conversion and it slows down the program which would be significant for larger amounts of data
 	stmt->executeUpdate(sqlStatement);
 	conn->terminateStatement(stmt);
 }

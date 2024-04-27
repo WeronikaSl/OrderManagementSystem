@@ -1,4 +1,5 @@
 #include "Table.hpp"
+
 #include <iostream>
 
 void Table::displayTable(Connection* conn, SqlStatement sqlQuery) const

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 //this class shouln't know what input will be used for

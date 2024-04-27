@@ -31,7 +31,7 @@ void Database::deleteDataFromTable()
 	table->deleteData(databaseConnection.getConnection(), idToRemove);
 }
 
-void Database::retrieveData()
+void Database::retrieveDataFromTable()
 {
 	displayTableNames("Which table do you want to retrive data from: ");
 	table = TableFactory::getTable(static_cast<TableType>(userInterface.getInputNumber()));
@@ -42,7 +42,7 @@ void Database::displayTableNames(std::string statament) const
 {
 	std::cout << statament << std::endl;
 
-	for (int i{ 0 }; i < amountOfTableNames; ++i)
+	for (int i{ 0 }; i < amountOfTablesNames; ++i)
 	{
 		std::cout << tableNames[i] << " - press " << i << std::endl;
 	}
@@ -50,20 +50,20 @@ void Database::displayTableNames(std::string statament) const
 	std::cout << "Your choice: ";
 }
 
-void Database::performOperation(DatabaseOpetation chosenOperation)
+void Database::performOperation(DatabaseOpetationType chosenOperation)
 {
 	switch (chosenOperation) {
-	case DatabaseOpetation::ADD:
+	case DatabaseOpetationType::ADD:
 		addDataIntoTable();
 		break;
-	case DatabaseOpetation::UPDATE:
+	case DatabaseOpetationType::UPDATE:
 		updateDataInTable();
 		break;
-	case DatabaseOpetation::DELETE:
+	case DatabaseOpetationType::DELETE:
 		deleteDataFromTable();
 		break;
-	case DatabaseOpetation::RETRIEVE:
-		retrieveData();
+	case DatabaseOpetationType::RETRIEVE:
+		retrieveDataFromTable();
 		break;
 	default:
 		std::cout << "There's no such option" << std::endl;

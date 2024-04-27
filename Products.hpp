@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Table.hpp"
 
 class Products : public Table
