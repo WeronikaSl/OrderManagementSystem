@@ -5,6 +5,7 @@ OrderManagementSystem is a C++ application that allows users to manage inventory
 
 ## Project created to practice:
 1. C++ application and classes design (such as creating abstraction or minimizing dependencies among classes)
-2. Integrating databases with C++ applications
+2. Integrating databases with C++ applications (used database - Oracle Database Express Edition (XE))
 3. XML handling in C++
-4. Unit testing
+
+Validation of user console input and exception handling has already been practiced in other projects. It's not something I want to focus on practicing here, so it has intentionally not been implemented.
