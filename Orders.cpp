@@ -47,5 +47,44 @@ void Orders::deleteData(Connection* conn, Id idToRemove) const
 void Orders::retrieveData(Connection* conn) const
 {
 	SqlStatement sqlQuery{ "SELECT ORDER_ID, CUSTOMER_ID, PRODUCT_ID FROM ORDERS" };
-	displayTable(conn, sqlQuery);
+	Statement* stmt = conn->createStatement();
+	stmt->setSQL(sqlQuery);
+	ResultSet* rs = stmt->executeQuery();
+
+	std::cout << std::endl;
+
+	std::string elem1{};
+	std::string elem2{};
+	std::string elem3{};
+
+	std::vector<std::string> elems{ "ORDERS" };
+
+	while (rs->next())
+	{
+		elem1 = rs->getString(1);
+		elem2 = rs->getString(2);
+		elem3 = rs->getString(3);
+
+		elems.push_back("ORDER_ID");
+		elems.push_back(elem1);
+		elems.push_back("CUSTOMER_ID");
+		elems.push_back(elem2);
+		elems.push_back("PRODUCT_ID");
+		elems.push_back(elem3);
+
+		std::cout << elem1 << " " << elem2 << " " << elem3 << std::endl;
+	}
+
+	std::cout << std::endl;
+
+	stmt->closeResultSet(rs);
+	conn->terminateStatement(stmt);
+
+	std::cout << "Do you want to write data to xml file? 1 - yes, 0 - no: ";
+	int userInput{ userInterface.getInputNumber() };
+
+	if (userInput == 1)
+	{
+		xmlWriter.writeToFile(elems);
+	}
 }

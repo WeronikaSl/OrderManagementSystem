@@ -130,7 +130,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\app\Weronika\product\21c\dbhomeXE\oci\lib\msvc</AdditionalLibraryDirectories>
-      <AdditionalDependencies>oci.lib;ociw32.lib;oraocci21.lib;kpucb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>oci.lib;ociw32.lib;oraocci21.lib;kpucb.lib;xmllite.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -141,9 +141,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Orders.cpp" />
     <ClCompile Include="Products.cpp" />
-    <ClCompile Include="Table.cpp" />
     <ClCompile Include="TableFactory.cpp" />
     <ClCompile Include="UserInterface.cpp" />
+    <ClCompile Include="XmlWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ApplicationManager.hpp" />
@@ -156,6 +156,7 @@
     <ClInclude Include="TableFactory.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="UserInterface.hpp" />
+    <ClInclude Include="XmlWriter.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

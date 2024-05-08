@@ -2,6 +2,7 @@
 
 #include "Types.hpp"
 #include "UserInterface.hpp"
+#include "XmlWriter.hpp"
 
 #include <occi.h>
 
@@ -11,8 +12,8 @@ class Table
 {
 protected:
 	UserInterface userInterface;
+	XmlWriter xmlWriter;
 
-	void displayTable(Connection*, SqlStatement) const;
 public:
 	virtual void addData(Connection*) const = 0;
 	virtual void updateData(Connection*) const = 0;

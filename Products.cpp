@@ -70,5 +70,44 @@ void Products::deleteData(Connection* conn, Id idToRemove) const
 void Products::retrieveData(Connection* conn) const
 {
 	SqlStatement sqlQuery{ "SELECT PRODUCT_ID, PRODUCT_NAME, PRICE_PER_UNIT FROM PRODUCTS" };
-	displayTable(conn, sqlQuery);
+	Statement* stmt = conn->createStatement();
+	stmt->setSQL(sqlQuery);
+	ResultSet* rs = stmt->executeQuery();
+
+	std::cout << std::endl;
+
+	std::string elem1{};
+	std::string elem2{};
+	std::string elem3{};
+
+	std::vector<std::string> elems{ "PRODUCTS" };
+
+	while (rs->next())
+	{
+		elem1 = rs->getString(1);
+		elem2 = rs->getString(2);
+		elem3 = rs->getString(3);
+
+		elems.push_back("PRODUCT_ID");
+		elems.push_back(elem1);
+		elems.push_back("PRODUCT_NAME");
+		elems.push_back(elem2);
+		elems.push_back("PRICE_PER_UNIT");
+		elems.push_back(elem3);
+
+		std::cout << elem1 << " " << elem2 << " " << elem3 << std::endl;
+	}
+
+	std::cout << std::endl;
+
+	stmt->closeResultSet(rs);
+	conn->terminateStatement(stmt);
+
+	std::cout << "Do you want to write data to xml file? 1 - yes, 0 - no: ";
+	int userInput{ userInterface.getInputNumber() };
+
+	if (userInput == 1)
+	{
+		xmlWriter.writeToFile(elems);
+	}
 }
