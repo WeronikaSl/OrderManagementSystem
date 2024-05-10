@@ -53,26 +53,26 @@ void Orders::retrieveData(Connection* conn) const
 
 	std::cout << std::endl;
 
-	std::string elem1{};
-	std::string elem2{};
-	std::string elem3{};
+	std::string retrievedData1{};
+	std::string retrievedData2{};
+	std::string retrievedData3{};
 
-	std::vector<std::string> elems{ "ORDERS" };
+	std::vector<std::string> dataForXml{ "ORDERS" };
 
 	while (rs->next())
 	{
-		elem1 = rs->getString(1);
-		elem2 = rs->getString(2);
-		elem3 = rs->getString(3);
+		retrievedData1 = rs->getString(1);
+		retrievedData2 = rs->getString(2);
+		retrievedData3 = rs->getString(3);
 
-		elems.push_back("ORDER_ID");
-		elems.push_back(elem1);
-		elems.push_back("CUSTOMER_ID");
-		elems.push_back(elem2);
-		elems.push_back("PRODUCT_ID");
-		elems.push_back(elem3);
+		dataForXml.push_back("ORDER_ID");
+		dataForXml.push_back(retrievedData1);
+		dataForXml.push_back("CUSTOMER_ID");
+		dataForXml.push_back(retrievedData2);
+		dataForXml.push_back("PRODUCT_ID");
+		dataForXml.push_back(retrievedData3);
 
-		std::cout << elem1 << " " << elem2 << " " << elem3 << std::endl;
+		std::cout << retrievedData1 << " " << retrievedData2 << " " << retrievedData3 << std::endl;
 	}
 
 	std::cout << std::endl;
@@ -85,6 +85,6 @@ void Orders::retrieveData(Connection* conn) const
 
 	if (userInput == 1)
 	{
-		xmlWriter.writeToFile(elems);
+		xmlWriter.writeToFile(dataForXml);
 	}
 }
